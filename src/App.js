@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 
 import FormComponent from './components/Form'
-import TableComponent from './components/Table'
+import TableContainer from './containers/Table'
 
 import './App.css';
 
 class App extends Component {
   state = {
-    users: [],
+    users: null,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     let usersObject = JSON.parse(localStorage.getItem('users'));
     let usersArray = [];
 
@@ -20,16 +20,17 @@ class App extends Component {
       usersArray.push(item);
     }
 
-    this.setState({ users: usersArray });
+    await this.setState({ users: usersArray });
   }
 
-  addDataToLocalStorage = (inputValues, event) => {
+  addDataToLocalStorage = async (inputValues, event) => {
     event.preventDefault();
 
     let localStorageData = JSON.parse(localStorage.getItem('users'));
     let currentStateUsers = this.state.users;
     const id = Date.now();
 
+    inputValues.id = id;
 
     if (localStorageData) {
       //Change data in localStorage
@@ -48,15 +49,22 @@ class App extends Component {
 
     currentStateUsers.push(inputValues);
 
-    this.setState({ users: currentStateUsers })
+    await this.setState({ users: currentStateUsers });
   }
   render() {
-    return (
-      <>
-        <TableComponent users={this.state.users} />
-        <FormComponent addDataToLocalStorage={this.addDataToLocalStorage} />
-      </>
-    );
+    console.log(this.state.users)
+    if (this.state.users) {
+      return (
+        <>
+          <TableContainer users={this.state.users} />
+          <FormComponent addDataToLocalStorage={this.addDataToLocalStorage} />
+        </>
+      );
+    } else {
+      return (
+        <h1>... Loading</h1>
+      );
+    }
   }
 }
 

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import TableRowComponent from './TableRow'
+
 const Table = styled.table`
   width: 90%;
   margin-left: 5%;
@@ -23,27 +25,10 @@ const TableHead = styled.td`
   color: #0dab0d;
 `;
 
-const TableData = styled.td`
-  padding: 10px;
-`;
-
 class TableComponent extends Component {
 
-  // state = {
-  //   data: null
-  // }
-
-  // componentDidMount() {
-  //   const { users } = this.props;
-  //   this.setState({ data: users });
-  // }
-
-  // componentWillReceiveProps(nextProps) {
-  //   const { users } = nextProps;
-  //   this.setState({ data: users })
-  // }
-
   render() {
+    const { users, removingItem } = this.props;
     return (
       <Table>
         <thead>
@@ -52,21 +37,14 @@ class TableComponent extends Component {
             <TableHead>Last Name</TableHead>
             <TableHead>Phone</TableHead>
             <TableHead>Age</TableHead>
+            <TableHead>Remove</TableHead>
           </TableRow>
         </thead>
         <tbody>
           {
-            this.props.users.map((item, index) => {
+            users.map((item, index) => {
               return (
-                <TableRow
-                  doubles={!Boolean(index % 2)}
-                  key={index}
-                >
-                  <TableData>{item.firstName}</TableData>
-                  <TableData>{item.lastName}</TableData>
-                  <TableData>{item.phone}</TableData>
-                  <TableData>{item.age}</TableData>
-                </TableRow>
+                <TableRowComponent key={index} data={item} removingItem={removingItem} index={index} />
               )
             })
           }
@@ -78,10 +56,12 @@ class TableComponent extends Component {
 
 TableComponent.propTypes = {
   users: PropTypes.array,
+  removingItem: PropTypes.func,
 };
 
 TableComponent.defaultProps = {
-  users: {},
+  users: [],
+  removingItem: null,
 };
 
 export default TableComponent;
