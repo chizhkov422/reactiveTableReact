@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -12,40 +12,29 @@ const TableData = styled.td`
 
 const TableDataIcon = styled.span`
   cursor: pointer;
+  color: #cc1111;
 `;
 
-class TableComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: props.data,
-      index: props.index,
-    };
-  }
-
-  render() {
-    const { data, index } = this.state;
-    return (
-      <TableRow
-        doubles={!Boolean(index % 2)}
-      >
-        <TableData>{data.firstName}</TableData>
-        <TableData>{data.lastName}</TableData>
-        <TableData>{data.phone}</TableData>
-        <TableData>{data.age}</TableData>
-        <TableData>
-          <TableDataIcon
-            role="img"
-            aria-label="removeIcon"
-            onClick={() => { this.props.removingItem(data.id) }}
-          >
-            🚮
-        </TableDataIcon>
-        </TableData>
-      </TableRow>
-    );
-  }
+const TableComponent = ({ data, index }) => {
+  return (
+    <TableRow
+      doubles={!Boolean(index % 2)}
+    >
+      <TableData>{data.firstName}</TableData>
+      <TableData>{data.lastName}</TableData>
+      <TableData>{data.phone}</TableData>
+      <TableData>{data.age}</TableData>
+      <TableData>
+        <TableDataIcon
+          role="img"
+          aria-label="removeIcon"
+          onClick={() => { this.props.removingItem(data.id) }}
+        >
+          &#10006;
+      </TableDataIcon>
+      </TableData>
+    </TableRow>
+  );
 }
 
 TableComponent.propTypes = {

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
 import FormComponent from '../components/Form'
-import TableComponent from '../components/Table'
+import TableContainer from '../containers/Table'
 
-import './App.css';
 
 class App extends Component {
   state = {
@@ -64,7 +63,7 @@ class App extends Component {
         newState.push(localStorageData[key]);
       }
     }
-    stringifyObject = JSON.stringify(newObject)
+    stringifyObject = JSON.stringify(newObject);
     localStorage.setItem('users', stringifyObject);
 
     this.setState({ users: newState });
@@ -74,7 +73,7 @@ class App extends Component {
     if (this.state.users) {
       return (
         <>
-          <TableComponent users={this.state.users} removingItem={this.removingItem} />
+          <TableContainer users={this.state.users} removingItem={this.removingItem} />
           <FormComponent addDataToLocalStorage={this.addDataToLocalStorage} />
         </>
       );
