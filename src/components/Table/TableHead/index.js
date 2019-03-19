@@ -16,11 +16,15 @@ const TableHeadComponent = ({ title, orderingColumn, columnId }) => {
   return (
     <TableHead>
       {title}
-      <OrderIcon
-        onClick={() => orderingColumn(columnId)}
-      >
-        &#8693;
-      </OrderIcon>
+      {
+        (title !== 'Remove') ?
+          <OrderIcon
+            onClick={() => orderingColumn(columnId)}
+          >
+            &#8693;
+          </OrderIcon> : ''
+      }
+
     </TableHead>
   );
 }

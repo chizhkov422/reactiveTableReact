@@ -15,7 +15,7 @@ const TableDataIcon = styled.span`
   color: #cc1111;
 `;
 
-const TableComponent = ({ data, index }) => {
+const TableComponent = ({ data, index, removingItem }) => {
   return (
     <TableRow
       doubles={!Boolean(index % 2)}
@@ -28,7 +28,7 @@ const TableComponent = ({ data, index }) => {
         <TableDataIcon
           role="img"
           aria-label="removeIcon"
-          onClick={() => { this.props.removingItem(data.id) }}
+          onClick={() => { removingItem(data.id) }}
         >
           &#10006;
       </TableDataIcon>
