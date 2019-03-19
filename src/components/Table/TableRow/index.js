@@ -36,9 +36,11 @@ class TableComponent extends Component {
         <TableData>{data.age}</TableData>
         <TableData>
           <TableDataIcon
+            role="img"
+            aria-label="removeIcon"
             onClick={() => { this.props.removingItem(data.id) }}
           >
-            &#128686;
+            🚮
         </TableDataIcon>
         </TableData>
       </TableRow>

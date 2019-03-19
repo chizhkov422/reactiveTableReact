@@ -28,7 +28,7 @@ const Input = styled.input`
   padding: 5px 10px;
   background-color: #297900;
   border-radius: 5px;
-  border: ${props => props.warning ? 'border: 2px solid red' : '1px solid #0dab0d'};
+  border: ${props => props.warning ? '2px solid red' : '1px solid #0dab0d'};
   font-size: 14px;
   color: white;
 
@@ -87,7 +87,7 @@ class FormComponent extends Component {
   setStateForAddButton = () => {
     // Check fill field
     for (let key in this.state.inputValues) {
-      if (!this.state.inputValues[key]) {
+      if (!this.state.inputValues[key] && key !== 'id') {
         this.setState({ disabledButton: true });
         return;
       }

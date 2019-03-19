@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import FormComponent from './components/Form'
-import TableContainer from './containers/Table'
+import FormComponent from '../components/Form'
+import TableComponent from '../components/Table'
 
 import './App.css';
 
@@ -51,12 +51,30 @@ class App extends Component {
 
     await this.setState({ users: currentStateUsers });
   }
+
+  removingItem = (id) => {
+    const localStorageData = JSON.parse(localStorage.getItem('users'));
+    let stringifyObject;
+    let newObject = {};
+    let newState = [];
+
+    for (let key in localStorageData) {
+      if (parseInt(key, 10) !== id) {
+        newObject[key] = localStorageData[key];
+        newState.push(localStorageData[key]);
+      }
+    }
+    stringifyObject = JSON.stringify(newObject)
+    localStorage.setItem('users', stringifyObject);
+
+    this.setState({ users: newState });
+  }
+
   render() {
-    console.log(this.state.users)
     if (this.state.users) {
       return (
         <>
-          <TableContainer users={this.state.users} />
+          <TableComponent users={this.state.users} removingItem={this.removingItem} />
           <FormComponent addDataToLocalStorage={this.addDataToLocalStorage} />
         </>
       );
