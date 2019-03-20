@@ -208,15 +208,21 @@ class FormComponent extends Component {
 
   render() {
 
+    const {
+      warnings,
+      inputValues,
+      disabledButton,
+    } = this.state;
+
     return (
       <Form>
         <InputBlock>
           <LabelInput htmlFor="firstName">First name</LabelInput>
           <Input
-            warning={this.state.warnings.firstNameWarning}
+            warning={warnings.firstNameWarning}
             id="firstName"
             type="text"
-            value={this.state.inputValues.firstName}
+            value={inputValues.firstName}
             onChange={this.changeHandlerForFirstNameInput}
           ></Input>
         </InputBlock>
@@ -224,10 +230,10 @@ class FormComponent extends Component {
         <InputBlock>
           <LabelInput htmlFor="lastName">Last name</LabelInput>
           <Input
-            warning={this.state.warnings.lastNameWarning}
+            warning={warnings.lastNameWarning}
             id="lastName"
             type="text"
-            value={this.state.inputValues.lastName}
+            value={inputValues.lastName}
             onChange={this.changeHandlerForLastNameInput}
           ></Input>
         </InputBlock>
@@ -235,11 +241,11 @@ class FormComponent extends Component {
         <InputBlock>
           <LabelInput htmlFor="phone">Phone</LabelInput>
           <Input
-            warning={this.state.warnings.phoneWarning}
+            warning={warnings.phoneWarning}
             id="phone"
             type="text"
             placeholder="093 000 00 00"
-            value={this.state.inputValues.phone}
+            value={inputValues.phone}
             onChange={this.changeHandlerForPhoneInput}
           ></Input>
         </InputBlock>
@@ -247,16 +253,16 @@ class FormComponent extends Component {
         <InputBlock>
           <LabelInput htmlFor="age">Age</LabelInput>
           <Input
-            warning={this.state.warnings.ageWarning}
+            warning={warnings.ageWarning}
             id="age"
             type="number"
-            value={this.state.inputValues.age}
+            value={inputValues.age}
             onChange={this.changeHandlerForAgeInput}
           ></Input>
         </InputBlock>
 
         <Button
-          disabled={this.state.disabledButton}
+          disabled={disabledButton}
           onClick={this.clickHandlerForAddBtn}
         >
           Add
