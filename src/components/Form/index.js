@@ -24,7 +24,7 @@ const LabelInput = styled.label`
 const Input = styled.input`
   width: 230px;
   height: 20px;
-  margin: 5px auto;
+  margin: 5px auto 0 auto;
   padding: 5px 10px;
   background-color: #297900;
   border-radius: 5px;
@@ -64,6 +64,11 @@ const Button = styled.button`
     color: red;
     cursor: not-allowed;
   }
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  margin: 0 0 5px 0;
 `;
 
 class FormComponent extends Component {
@@ -183,7 +188,7 @@ class FormComponent extends Component {
 
     // Validation
     let warnings = { ...this.state.warnings };
-    if (e.target.value < 0) {
+    if (e.target.value <= 0) {
       warnings.ageWarning = true;
       await this.setState({ warnings });
     } else {
@@ -225,6 +230,12 @@ class FormComponent extends Component {
             value={inputValues.firstName}
             onChange={this.changeHandlerForFirstNameInput}
           ></Input>
+          {
+            warnings.firstNameWarning ?
+              <ErrorMessage>The first name must consist only of Latin letters</ErrorMessage> :
+              ''
+          }
+
         </InputBlock>
 
         <InputBlock>
@@ -236,6 +247,11 @@ class FormComponent extends Component {
             value={inputValues.lastName}
             onChange={this.changeHandlerForLastNameInput}
           ></Input>
+          {
+            warnings.lastNameWarning ?
+              <ErrorMessage>The last name must consist only of Latin letters</ErrorMessage> :
+              ''
+          }
         </InputBlock>
 
         <InputBlock>
@@ -248,6 +264,11 @@ class FormComponent extends Component {
             value={inputValues.phone}
             onChange={this.changeHandlerForPhoneInput}
           ></Input>
+          {
+            warnings.phoneWarning ?
+              <ErrorMessage>The phone should consist of 6-16 digits</ErrorMessage> :
+              ''
+          }
         </InputBlock>
 
         <InputBlock>
@@ -259,6 +280,11 @@ class FormComponent extends Component {
             value={inputValues.age}
             onChange={this.changeHandlerForAgeInput}
           ></Input>
+          {
+            warnings.ageWarning ?
+              <ErrorMessage>Age must be greater than zero</ErrorMessage> :
+              ''
+          }
         </InputBlock>
 
         <Button
