@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -71,239 +71,115 @@ const ErrorMessage = styled.p`
   margin: 0 0 5px 0;
 `;
 
-class FormComponent extends Component {
+const FormComponent = ({
+  warnings,
+  inputValues,
+  disabledButton,
+  changeHandlerForFirstNameInput,
+  changeHandlerForLastNameInput,
+  changeHandlerForPhoneInput,
+  changeHandlerForAgeInput,
+  clickHandlerForAddBtn
+}) => {
 
-  state = {
-    disabledButton: true,
-    inputValues: {
-      age: '',
-      firstName: '',
-      lastName: '',
-      phone: '',
-    },
-    warnings: {
-      firstNameWarning: false,
-      lastNameWarning: false,
-      phoneWarning: false,
-      ageWarning: false,
-    }
-  };
+  return (
+    <Form>
+      <InputBlock>
+        <LabelInput htmlFor="firstName">First name</LabelInput>
+        <Input
+          warning={warnings.firstNameWarning}
+          id="firstName"
+          type="text"
+          value={inputValues.firstName}
+          onChange={changeHandlerForFirstNameInput}
+        ></Input>
+        {
+          warnings.firstNameWarning ?
+            <ErrorMessage>The first name must consist only of Latin letters</ErrorMessage> :
+            ''
+        }
 
-  setStateForAddButton = () => {
-    // Check fill field
-    for (let key in this.state.inputValues) {
-      if (!this.state.inputValues[key] && key !== 'id') {
-        this.setState({ disabledButton: true });
-        return;
-      }
-    }
-    // Check warnings
-    for (let key in this.state.warnings) {
-      if (this.state.warnings[key]) {
-        this.setState({ disabledButton: true });
-        return;
-      }
-    }
+      </InputBlock>
 
-    this.setState({ disabledButton: false });
-  }
-  changeHandlerForFirstNameInput = async (e) => {
-    e.persist();
-    //Change value
-    let inputValues = { ...this.state.inputValues };
-    inputValues.firstName = e.target.value;
-    await this.setState({ inputValues });
+      <InputBlock>
+        <LabelInput htmlFor="lastName">Last name</LabelInput>
+        <Input
+          warning={warnings.lastNameWarning}
+          id="lastName"
+          type="text"
+          value={inputValues.lastName}
+          onChange={changeHandlerForLastNameInput}
+        ></Input>
+        {
+          warnings.lastNameWarning ?
+            <ErrorMessage>The last name must consist only of Latin letters</ErrorMessage> :
+            ''
+        }
+      </InputBlock>
 
-    //Validation 
-    let regExp = /^[a-z ,.'-]+$/i;
+      <InputBlock>
+        <LabelInput htmlFor="phone">Phone</LabelInput>
+        <Input
+          warning={warnings.phoneWarning}
+          id="phone"
+          type="text"
+          placeholder="093 000 00 00"
+          value={inputValues.phone}
+          onChange={changeHandlerForPhoneInput}
+        ></Input>
+        {
+          warnings.phoneWarning ?
+            <ErrorMessage>The phone should consist of 6-16 digits</ErrorMessage> :
+            ''
+        }
+      </InputBlock>
 
-    if (!regExp.test(e.target.value)) {
-      let warnings = { ...this.state.warnings };
+      <InputBlock>
+        <LabelInput htmlFor="age">Age</LabelInput>
+        <Input
+          warning={warnings.ageWarning}
+          id="age"
+          type="number"
+          value={inputValues.age}
+          onChange={changeHandlerForAgeInput}
+        ></Input>
+        {
+          warnings.ageWarning ?
+            <ErrorMessage>Age must be greater than zero</ErrorMessage> :
+            ''
+        }
+      </InputBlock>
 
-      warnings.firstNameWarning = true;
-      await this.setState({ warnings });
-    } else {
-      let warnings = { ...this.state.warnings };
-
-      warnings.firstNameWarning = false;
-      await this.setState({ warnings });
-    }
-
-    this.setStateForAddButton();
-  }
-  changeHandlerForLastNameInput = async (e) => {
-    e.persist();
-    //Change value
-    let inputValues = { ...this.state.inputValues };
-    inputValues.lastName = e.target.value;
-    await this.setState({ inputValues });
-
-    //Validation 
-    let regExp = /^[a-z ,.'-]+$/i;
-
-    if (!regExp.test(e.target.value)) {
-      let warnings = { ...this.state.warnings };
-
-      warnings.lastNameWarning = true;
-      await this.setState({ warnings });
-    } else {
-      let warnings = { ...this.state.warnings };
-
-      warnings.lastNameWarning = false;
-      await this.setState({ warnings });
-    }
-
-    this.setStateForAddButton();
-  }
-  changeHandlerForPhoneInput = async (e) => {
-    e.persist();
-    //Change value
-    let inputValues = { ...this.state.inputValues };
-    inputValues.phone = e.target.value;
-    await this.setState({ inputValues });
-
-    //Validation
-    let regExp = /^\d[\d() -]{4,14}\d$/;
-
-    if (!regExp.test(e.target.value)) {
-      let warnings = { ...this.state.warnings };
-
-      warnings.phoneWarning = true;
-      await this.setState({ warnings });
-    } else {
-      let warnings = { ...this.state.warnings };
-
-      warnings.phoneWarning = false;
-      await this.setState({ warnings });
-    }
-
-    this.setStateForAddButton();
-  }
-  changeHandlerForAgeInput = async (e) => {
-    e.persist();
-    //Change value
-    let inputValues = { ...this.state.inputValues };
-    inputValues.age = e.target.value;
-    await this.setState({ inputValues });
-
-    // Validation
-    let warnings = { ...this.state.warnings };
-    if (e.target.value <= 0) {
-      warnings.ageWarning = true;
-      await this.setState({ warnings });
-    } else {
-      warnings.ageWarning = false;
-      await this.setState({ warnings });
-    }
-
-    this.setStateForAddButton();
-  }
-  clickHandlerForAddBtn = (event) => {
-    this.props.addDataToLocalStorage(this.state.inputValues, event);
-
-    let inputValues = { ...this.state.inputValues };
-
-    for (let key in inputValues) {
-      inputValues[key] = '';
-    }
-
-    this.setState({ inputValues });
-    this.setState({ disabledButton: true });
-  }
-
-  render() {
-
-    const {
-      warnings,
-      inputValues,
-      disabledButton,
-    } = this.state;
-
-    return (
-      <Form>
-        <InputBlock>
-          <LabelInput htmlFor="firstName">First name</LabelInput>
-          <Input
-            warning={warnings.firstNameWarning}
-            id="firstName"
-            type="text"
-            value={inputValues.firstName}
-            onChange={this.changeHandlerForFirstNameInput}
-          ></Input>
-          {
-            warnings.firstNameWarning ?
-              <ErrorMessage>The first name must consist only of Latin letters</ErrorMessage> :
-              ''
-          }
-
-        </InputBlock>
-
-        <InputBlock>
-          <LabelInput htmlFor="lastName">Last name</LabelInput>
-          <Input
-            warning={warnings.lastNameWarning}
-            id="lastName"
-            type="text"
-            value={inputValues.lastName}
-            onChange={this.changeHandlerForLastNameInput}
-          ></Input>
-          {
-            warnings.lastNameWarning ?
-              <ErrorMessage>The last name must consist only of Latin letters</ErrorMessage> :
-              ''
-          }
-        </InputBlock>
-
-        <InputBlock>
-          <LabelInput htmlFor="phone">Phone</LabelInput>
-          <Input
-            warning={warnings.phoneWarning}
-            id="phone"
-            type="text"
-            placeholder="093 000 00 00"
-            value={inputValues.phone}
-            onChange={this.changeHandlerForPhoneInput}
-          ></Input>
-          {
-            warnings.phoneWarning ?
-              <ErrorMessage>The phone should consist of 6-16 digits</ErrorMessage> :
-              ''
-          }
-        </InputBlock>
-
-        <InputBlock>
-          <LabelInput htmlFor="age">Age</LabelInput>
-          <Input
-            warning={warnings.ageWarning}
-            id="age"
-            type="number"
-            value={inputValues.age}
-            onChange={this.changeHandlerForAgeInput}
-          ></Input>
-          {
-            warnings.ageWarning ?
-              <ErrorMessage>Age must be greater than zero</ErrorMessage> :
-              ''
-          }
-        </InputBlock>
-
-        <Button
-          disabled={disabledButton}
-          onClick={this.clickHandlerForAddBtn}
-        >
-          Add
+      <Button
+        disabled={disabledButton}
+        onClick={clickHandlerForAddBtn}
+      >
+        Add
         </Button>
-      </Form>
-    );
-  }
+    </Form>
+  );
 }
 
 FormComponent.propTypes = {
-  addDataToLocalStorage: PropTypes.func,
+  warnings: PropTypes.object,
+  inputValues: PropTypes.object,
+  disabledButton: PropTypes.bool,
+  changeHandlerForFirstNameInput: PropTypes.func,
+  changeHandlerForLastNameInput: PropTypes.func,
+  changeHandlerForPhoneInput: PropTypes.func,
+  changeHandlerForAgeInput: PropTypes.func,
+  clickHandlerForAddBtn: PropTypes.func,
 };
 
 FormComponent.defaultProps = {
-  addDataToLocalStorage: null,
+  warnings: {},
+  inputValues: {},
+  disabledButton: false,
+  changeHandlerForFirstNameInput: null,
+  changeHandlerForLastNameInput: null,
+  changeHandlerForPhoneInput: null,
+  changeHandlerForAgeInput: null,
+  clickHandlerForAddBtn: null,
 };
 
 export default FormComponent;

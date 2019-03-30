@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import FormComponent from '../components/Form'
+import ValidationContainer from '../containers/Validation'
 import TableContainer from '../containers/Table'
 
 
@@ -74,7 +74,7 @@ class App extends Component {
       return (
         <>
           <TableContainer users={this.state.users} removingItem={this.removingItem} />
-          <FormComponent addDataToLocalStorage={this.addDataToLocalStorage} />
+          <ValidationContainer addDataToLocalStorage={this.addDataToLocalStorage} />
         </>
       );
     } else {
