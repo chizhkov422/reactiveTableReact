@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
 import ValidationContainer from '../containers/Validation'
-import TableContainer from '../containers/Table'
+import TableComponent from '../components/Table'
 
 
 class App extends Component {
   state = {
     users: null,
+    orderASK: true,
   };
 
   async componentDidMount() {
@@ -69,11 +70,26 @@ class App extends Component {
     this.setState({ users: newState });
   }
 
+  orderingColumn = (prop) => {
+    const { users, orderASK } = this.state;
+
+    let sortedArray = users.sort(function (firstItem, secondItem) {
+      if (orderASK) {
+        return (firstItem[prop] > secondItem[prop]) ? 1 : ((firstItem[prop] < secondItem[prop]) ? -1 : 0);
+      } else {
+        return (secondItem[prop] > firstItem[prop]) ? 1 : ((secondItem[prop] < firstItem[prop]) ? -1 : 0);
+      }
+    });
+
+    this.setState({ users: sortedArray });
+    this.setState({ orderASK: !orderASK });
+  }
+
   render() {
     if (this.state.users) {
       return (
         <>
-          <TableContainer users={this.state.users} removingItem={this.removingItem} />
+          <TableComponent users={this.state.users} removingItem={this.removingItem} orderingColumn={this.orderingColumn} />
           <ValidationContainer addDataToLocalStorage={this.addDataToLocalStorage} />
         </>
       );
